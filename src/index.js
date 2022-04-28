@@ -7,6 +7,7 @@ module.exports = class webhook {
     constructor(url) {
         this.url = url;
         this.payload;
+        this.templates = this.getTemplates();
     }
 
     checkFieldValueLength(value) {
@@ -21,7 +22,7 @@ module.exports = class webhook {
             if (data.fields == []) {
                 return new Promise((resolve) => resolve());
             } else {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     const checks = [];
 
                     for (let i = 0; i < data.fields.length; i++) {
@@ -34,67 +35,92 @@ module.exports = class webhook {
                 });
             }
         } else {
-            return new Promise(() => {
-                throw new Error("Embed no válido.")
-            });
+            throw new Error('Embed no válido')
         }
-
     }
 
     preparePayload(data) {
         return new Promise((resolve, reject) => {
-            this.checkData(data).catch(err => {
-                console.log(err)
-                throw new Error(err)
-            })
-            if (typeof (data) != 'object') {
-                resolve(this.payload = {
-                    content: data
+            try {
+                this.checkData(data).catch(e => {
+                    reject(e)
                 })
-            } else {
-                resolve(this.payload = {
-                    embeds: [data]
-                })
-
+                if (typeof (data) != 'object') {
+                    resolve(this.payload = {
+                        content: data
+                    })
+                } else {
+                    resolve(this.payload = {
+                        embeds: [data]
+                    })
+                }
+            } catch (e) {
+                reject(e)
             }
         })
     }
 
-    createTemplate(identifier, rawTemplateData) {
+    createTemplate(identifier, templateData) {
         const dir = `./config/${identifier}.json`
-        if (!rawTemplateData) throw new Error('No has añadido datos a la template.')
+        if (!templateData) throw new Error('No has añadido datos a la plantilla.')
         return new Promise((resolve, reject) => {
-            fs.writeFile(dir, JSON.stringify([rawTemplateData], null, 2), (err, data) => {
+            fs.writeFile(dir, JSON.stringify([templateData], null, 2), (err, data) => {
                 if (err) reject(err)
             })
+            this.templates[identifier] = templateData
             resolve()
         })
     }
 
-    getTemplate(identifier) {
-        const dir = `./config/${identifier}.json`
-        return JSON.parse(fs.readFileSync(dir))
+    getTemplates() {
+        return new Promise((resolve, reject) => {
+            this.templates = []
+            fs.readdirSync('./config').forEach(file => {
+                let fileData = fs.readFileSync(`./config/${file}`)
+                this.templates[file.split('.')[0]] = JSON.parse(fileData)
+            })
+            resolve(this.templates)
+        })
+    }
+
+    getSingleTemplate(identifier) {
+        return new Promise((resolve, reject) => {
+            const dir = `./config/${identifier}.json`
+            let file = fs.readFileSync(dir)
+            if (!file) reject("El archivo de la plantilla no se ha encontrado.")
+            resolve(JSON.parse(file))
+        })
     }
 
     send(data, template) {
         return new Promise((resolve, reject) => {
-            if (template) {
-                this.preparePayload(data).catch(err => {
-                    throw new Error(err)
-                })
-                let embed = this.getTemplate(template)
-                axios.post(this.url, {
-                        embeds: [embed[0]]
+            try {
+                if (template) {
+                    this.preparePayload(data)
+                    if (this.templates[template]) {
+                        axios.post(this.url, {
+                                embeds: [this.templates[template]]
+                            })
+                            .then(res => resolve(res))
+                            .catch(err => reject(err))
+                    } else {
+                        let embed = this.getSingleTemplate(template)
+                        axios.post(this.url, {
+                                embeds: [embed[0]]
+                            })
+                            .then(res => resolve(res))
+                            .catch(err => reject(err))
+                    }
+                } else {
+                    this.preparePayload(data).catch(e => {
+                        reject(e)
                     })
-                    .then(res => resolve(res))
-                    .catch(err => reject(err))
-            } else {
-                this.preparePayload(data).catch(err => {
-                    throw new Error(err)
-                })
-                axios.post(this.url, this.payload)
-                    .then(res => resolve(res))
-                    .catch(err => reject(err))
+                    axios.post(this.url, this.payload)
+                        .then(res => resolve(res))
+                        .catch(err => reject(err))
+                }
+            } catch (e) {
+                console.log(e)
             }
         })
     }

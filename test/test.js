@@ -20,30 +20,34 @@ describe('Recieves the interaction', () => {
     const t = () => {
         throw new Error("No has añadido datos a la template.");
     };
-    // test('sends webhook with content', () => {
-    //     webhookClient.send("a")
-    // });
-    // test('sends webhook with embed', () => {
-    //     webhookClient.send(errorembed2)
-    // });
-    test('sends webhook with bad JSON', () => {
-        webhookClient.send({
-            "macarrones": "bien hechos"
-        }).catch(err => {
-            console.log('3')
+    // describe('webhook send messages', () => {
+    //     it('sends webhook with content', () => {
+    //         webhookClient.send("a")
+    //     });
+    //     it('sends webhook with embed', () => {
+    //         webhookClient.send(errorembed2)
+    //     });
+    // })
+    // describe('errors on webhooks', () => {
+    //     it('throws an error if the json is not an embed', () => {
+    //         webhookClient.send({
+    //             "macarrones": "bien hechos"
+    //         }).catch(e => {})
+    //     });
+    // })
+    describe('templates', () => {
+        it('create a template', () => {
+            webhookClient.createTemplate("warning", errorEmbedTemplate).catch(e => {})
         })
-        // expect(() => {
-        // }).toThrow('Embed no válido.')
-    });
-    // test('create a template', () => {
-    //     webhookClient.createTemplate("warning", errorEmbedTemplate)
-    // });
-    // test('get a template', () => {
-    //     webhookClient.send("a", "warning")
-    // });
-    // test('create a template', () => {
-    //     expect(() => {
-    //         webhookClient.createTemplate("warning")
-    //     }).toThrow('No has añadido datos a la template.')
-    // });
+        it('get a template', () => {
+            webhookClient.send("a", "warning").catch(e => {})
+        });
+    })
+    describe('templates errors', () => {
+        test('create a template', () => {
+            expect(() => {
+                webhookClient.createTemplate("warning").catch(e => {})
+            }).toThrow('No has añadido datos a la plantilla.')
+        });
+    })
 });
