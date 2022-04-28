@@ -1,15 +1,25 @@
 {
   "type": "commonjs",
   "name": "simplest-discord-webhook",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "publish": "npm publish",
+    "build": "esbuild ./src/index.js --format=esm --bundle --outfile=./dist/index.js --platform=node --target=node17.4 --minify",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
   },
   "author": "LyricalString",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "discord.js": "^13.6.0",
+    "simplest-discord-webhook": "^1.0.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.38",
+    "jest": "^28.0.2",
+    "jest-cli": "^28.0.2"
   }
 }

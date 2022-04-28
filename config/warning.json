@@ -1,0 +1,18 @@
+[
+  {
+    "title": null,
+    "type": "rich",
+    "description": null,
+    "url": null,
+    "timestamp": null,
+    "color": 15548997,
+    "fields": [],
+    "thumbnail": null,
+    "image": null,
+    "author": null,
+    "footer": {
+      "text": "Some footer text here",
+      "icon_url": "https://i.imgur.com/AfFp7pu.png"
+    }
+  }
+]
