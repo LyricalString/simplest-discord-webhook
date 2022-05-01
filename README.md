@@ -1,4 +1,3 @@
-# Discord Webhook sending
 ![version](https://img.shields.io/npm/v/simplest-discord-webhook "Version")
 ![npm](https://img.shields.io/npm/dt/simplest-discord-webhook.svg "Total Downloads")
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/LyricalString/simplest-discord-webhook.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/LyricalString/simplest-discord-webhook/alerts/)
