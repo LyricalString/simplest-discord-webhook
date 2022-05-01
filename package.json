@@ -1,9 +1,9 @@
 {
   "type": "commonjs",
   "name": "simplest-discord-webhook",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "publish": "npm publish",
     "build": "esbuild ./src/index.js --format=esm --bundle --outfile=./dist/index.js --platform=node --target=node17.4 --minify",
