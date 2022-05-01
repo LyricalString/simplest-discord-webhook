@@ -13,4 +13,4 @@ const errorEmbedTemplate = new MessageEmbed()
     });
 
 
-webhookClient.send("", "createdError")
+webhookClient.send(errorEmbedTemplate)

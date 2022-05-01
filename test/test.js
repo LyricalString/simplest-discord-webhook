@@ -17,9 +17,6 @@ const webhook = require('../src/index')
 const webhookClient = new webhook("https://canary.discord.com/api/webhooks/969137897062170644/GtarBHvJ1FSwrUIBKZIIvoCrs7A_SZjvPcXgYlGpA_jD-JrV-OGg4_ckIoNyKr7qP5GM")
 
 describe('Recieves the interaction', () => {
-    const t = () => {
-        throw new Error("No has añadido datos a la template.");
-    };
     // describe('webhook send messages', () => {
     //     it('sends webhook with content', () => {
     //         webhookClient.send("a")
@@ -35,19 +32,32 @@ describe('Recieves the interaction', () => {
     //         }).catch(e => {})
     //     });
     // })
-    describe('templates', () => {
-        it('create a template', () => {
-            webhookClient.createTemplate("warning", errorEmbedTemplate).catch(e => {})
-        })
-        it('get a template', () => {
-            webhookClient.send("a", "warning").catch(e => {})
-        });
-    })
+    // describe('templates', () => {
+    //     it('create a template', () => {
+    //         webhookClient.createTemplate("warning", errorEmbedTemplate).catch(e => {
+    //             console.log(e)
+    //         })
+    //     })
+    // it('get a template', () => {
+    //     webhookClient.send("a", "warning").catch(e => {})
+    // });
+    // })
     describe('templates errors', () => {
-        test('create a template', () => {
+        // it('create a template', () => {
+        //     expect(() => {
+        //         webhookClient.createTemplate("warning").catch(e => {
+        //             console.log(e)
+        //         })
+        //     }).toThrow('No has añadido datos a la plantilla.')
+        // });
+        it('send a template with options', () => {
             expect(() => {
-                webhookClient.createTemplate("warning").catch(e => {})
-            }).toThrow('No has añadido datos a la plantilla.')
+                webhookClient.sendTemplate("warning", {
+                    title: "a"
+                }).catch(e => {
+                    console.log(e)
+                })
+            })
         });
     })
 });

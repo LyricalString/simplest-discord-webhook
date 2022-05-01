@@ -2,12 +2,15 @@ const {
     default: axios
 } = require('axios');
 const fs = require('fs')
+const path = require('path')
 
 module.exports = class webhook {
     constructor(url) {
         this.url = url;
         this.payload;
-        this.templates = this.getTemplates();
+        this.templates = this.getTemplates().catch(e => {
+            throw new Error(e)
+        });
     }
 
     checkFieldValueLength(value) {
@@ -61,7 +64,7 @@ module.exports = class webhook {
     }
 
     createTemplate(identifier, templateData) {
-        const dir = `./config/${identifier}.json`
+        const dir = path.join(__dirname, `../config/${identifier}.json`)
         if (!templateData) throw new Error('No has añadido datos a la plantilla.')
         return new Promise((resolve, reject) => {
             fs.writeFile(dir, JSON.stringify([templateData], null, 2), (err, data) => {
@@ -75,9 +78,16 @@ module.exports = class webhook {
     getTemplates() {
         return new Promise((resolve, reject) => {
             this.templates = []
-            fs.readdirSync('./config').forEach(file => {
-                let fileData = fs.readFileSync(`./config/${file}`)
-                this.templates[file.split('.')[0]] = JSON.parse(fileData)
+            let fileData
+            fs.readdirSync(path.join(__dirname, '../config')).forEach(file => {
+                let rawfileData = fs.readFileSync(path.join(__dirname, `../config/${file}`))
+                if (!rawfileData) reject(`El archivo ${file} está vacío.`)
+                try {
+                    fileData = JSON.parse(rawfileData)
+                } catch (e) {
+                    reject(`El archivo ${file} está vacío.`)
+                }
+                this.templates[file.split('.')[0]] = fileData
             })
             resolve(this.templates)
         })
@@ -85,10 +95,42 @@ module.exports = class webhook {
 
     getSingleTemplate(identifier) {
         return new Promise((resolve, reject) => {
-            const dir = `./config/${identifier}.json`
+            let fileData
+            const dir = path.join(__dirname, `../config/${identifier}.json`)
             let file = fs.readFileSync(dir)
             if (!file) reject("El archivo de la plantilla no se ha encontrado.")
-            resolve(JSON.parse(file))
+            try {
+                fileData = JSON.parse(file)
+            } catch (e) {
+                reject(`El archivo ${file} está vacío.`)
+            }
+            resolve(fileData)
+        })
+    }
+
+    sendTemplate(template, options) {
+        console.log('1')
+        return new Promise((resolve, reject) => {
+            try {
+                if (template) {
+                    let embed = this.getSingleTemplate(template)[0].catch(e => {
+                        throw new Error(e)
+                    })
+                    console.log(embed)
+                    if (options) {
+                        if (options.title) embed.title = options.title
+                    }
+                    axios.post(this.url, {
+                            embeds: [embed]
+                        })
+                        .then(res => resolve(res))
+                        .catch(err => reject(err))
+                } else {
+                    throw new Error('La plantilla no existe.')
+                }
+            } catch (e) {
+                console.log(e)
+            }
         })
     }
 
@@ -104,7 +146,9 @@ module.exports = class webhook {
                             .then(res => resolve(res))
                             .catch(err => reject(err))
                     } else {
-                        let embed = this.getSingleTemplate(template)
+                        let embed = this.getSingleTemplate(template).catch(e => {
+                            throw new Error(e)
+                        })
                         axios.post(this.url, {
                                 embeds: [embed[0]]
                             })
