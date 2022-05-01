@@ -1,7 +1,7 @@
 {
   "type": "commonjs",
   "name": "simplest-discord-webhook",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,6 +10,13 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "keywords": [
+    "discord",
+    "discord webhook",
+    "discord webhooks",
+    "discordjs webhook",
+    "simple discord webhooks"
+  ],
   "author": "LyricalString",
   "license": "ISC",
   "dependencies": {

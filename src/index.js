@@ -29,7 +29,7 @@ module.exports = class webhook {
                     const checks = [];
 
                     for (let i = 0; i < data.fields.length; i++) {
-                        checks.push(this.checkFieldValueLength(this.payload.fields[i].value));
+                        checks.push(this.checkFieldValueLength(data.fields[i].value));
                     }
 
                     Promise.all(checks).then(() => {
