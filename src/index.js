@@ -109,7 +109,6 @@ module.exports = class webhook {
     }
 
     sendTemplate(template, options) {
-        console.log('1')
         return new Promise((resolve, reject) => {
             try {
                 if (template) {
