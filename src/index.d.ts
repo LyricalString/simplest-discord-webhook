@@ -3,7 +3,7 @@ import { MessageEmbed } from 'discord.js'
 export default interface webhook {
     url: string
     payload: { content: string } | { embeds: [MessageEmbed] }
-    templates: { [key: string]: MessageEmbed }
+    templates: { [key: string]: MessageEmbed[] }
     constructor(url: string): this
     checkFieldValueLength(value: MessageEmbed): void
     checkData(data: MessageEmbed | string): Promise<void>
