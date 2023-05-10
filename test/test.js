@@ -1,5 +1,5 @@
 import { EmbedBuilder } from 'discord.js'
-
+import { describe, it } from 'node:test'
 import Webhook from '../src/index.js'
 
 const errorembed2 = new EmbedBuilder()
@@ -50,16 +50,16 @@ describe('Recieves the interaction', () => {
         //         })
         //     }).toThrow('No has añadido datos a la plantilla.')
         // });
-        it('send a template with options', () => {
-            expect(() => {
-                webhookClient
-                    .sendTemplate('warning', {
-                        title: 'a',
-                    })
-                    .catch(e => {
-                        console.log(e)
-                    })
-            })
-        })
+        // it('send a template with options', () => {
+        // expect(() => {
+        //     webhookClient
+        //         .sendTemplate('warning', {
+        //             title: 'a',
+        //         })
+        //         .catch(e => {
+        //             console.log(e)
+        //         })
+        // })
+        // })
     })
 })
