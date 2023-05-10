@@ -1,4 +1,4 @@
 .github
 src
 test
-testing.js
+node_modules
