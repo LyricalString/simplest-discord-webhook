@@ -97,6 +97,13 @@ createTemplate('help', helpEmbed)
 
 const hook = new Webhook('YOUR WEBHOOK URL')
 hook.sendTemplate('help')
+// ...
+hook.sendTemplate('help', 'this is a message content')
+// or
+const tryThis = new EmbedBuilder().setTitle('You can try this').setDescription('...')
+hook.sendTemplate('help', {
+    embeds: [tryThis],
+})
 ```
 
 # License

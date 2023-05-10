@@ -1,9 +1,7 @@
-// @ts-check
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
 import { fileURLToPath } from 'url'
-import templates, { createTemplate } from './templates.js'
+import templates, { createTemplate, preparePayload } from './templates.js'
 export { createTemplate }
+import extend from 'just-extend'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -24,15 +22,16 @@ export default class Webhook {
 
     static createTemplate = createTemplate
 
-    async sendTemplate(template) {
+    async sendTemplate(template, options = {}) {
         if (typeof template !== 'string') throw new Error('template must be a string')
         if (!templates[template]) throw new Error('template not found')
+        options = preparePayload(options)
         const res = await fetch(this.#url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(templates[template]),
+            body: JSON.stringify(extend({}, templates[template], options)),
         }).then(res => res.json())
         return res
     }
