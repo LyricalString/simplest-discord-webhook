@@ -6,9 +6,7 @@
     "main": "src/index.js",
     "scripts": {
         "publish": "npm publish",
-        "build": "esbuild ./src/index.js --format=esm --bundle --outfile=./dist/index.js --platform=node --target=node18.12 --minify",
-        "test": "node test/test.js",
-        "test:watch": "node --watch test/test.js"
+        "build": "tsc && esbuild dist/index.js --minify --allow-overwrite --outfile=dist/index.js && esbuild dist/templates.js --minify --allow-overwrite --outfile=dist/templates.js"
     },
     "keywords": [
         "discord",
@@ -20,7 +18,7 @@
     "author": "LyricalString",
     "license": "ISC",
     "devDependencies": {
-        "discord.js": "14.11.0",
+        "discord.js": "^14",
         "esbuild": "0.17.18",
         "typescript": "5.0.4"
     },
