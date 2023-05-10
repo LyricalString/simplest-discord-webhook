@@ -21,7 +21,8 @@
     "license": "ISC",
     "devDependencies": {
         "discord.js": "14.11.0",
-        "esbuild": "0.17.18"
+        "esbuild": "0.17.18",
+        "typescript": "5.0.4"
     },
     "dependencies": {
         "just-extend": "6.2.0"

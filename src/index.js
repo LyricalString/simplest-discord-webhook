@@ -1,9 +1,6 @@
-import { fileURLToPath } from 'url'
 import templates, { createTemplate, preparePayload } from './templates.js'
 export { createTemplate }
 import extend from 'just-extend'
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default class Webhook {
     #url = ''
@@ -24,14 +21,14 @@ export default class Webhook {
 
     async sendTemplate(template, options = {}) {
         if (typeof template !== 'string') throw new Error('template must be a string')
-        if (!templates[template]) throw new Error('template not found')
+        if (!templates.has(template)) throw new Error('template not found')
         options = preparePayload(options)
         const res = await fetch(this.#url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(extend({}, templates[template], options)),
+            body: JSON.stringify(extend({}, templates.get(template), options)),
         }).then(res => res.json())
         return res
     }
