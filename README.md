@@ -86,6 +86,19 @@ try {
 }
 ```
 
+use templates
+
+```js
+import Webhook, { createTemplate } from 'simplest-discord-webhook'
+
+const helpEmbed = new EmbedBuilder().setTitle('Do you need help?').setDescription('...')
+
+createTemplate('help', helpEmbed)
+
+const hook = new Webhook('YOUR WEBHOOK URL')
+hook.sendTemplate('help')
+```
+
 # License
 
 MIT
