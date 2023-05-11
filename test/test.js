@@ -1,20 +1,20 @@
-const {
-    MessageEmbed
-} = require('discord.js')
-const errorembed2 = new MessageEmbed()
+import { EmbedBuilder } from 'discord.js'
+
+import Webhook from '../src/index.js'
+
+const errorembed2 = new EmbedBuilder()
     .setColor(process.env.bot1Embed_Color)
-    .setTitle("Error musica")
+    .setTitle('Error musica')
     .setDescription('<:error:897836005787308062> | Lavalink se encuentra fuera de servicio.')
 
-const errorEmbedTemplate = new MessageEmbed()
-    .setColor('RED')
-    .setFooter({
-        text: 'Some footer text here',
-        iconURL: 'https://i.imgur.com/AfFp7pu.png'
-    });
+const errorEmbedTemplate = new EmbedBuilder().setColor('RED').setFooter({
+    text: 'Some footer text here',
+    iconURL: 'https://i.imgur.com/AfFp7pu.png',
+})
 
-const webhook = require('../src/index')
-const webhookClient = new webhook("https://canary.discord.com/api/webhooks/969137897062170644/GtarBHvJ1FSwrUIBKZIIvoCrs7A_SZjvPcXgYlGpA_jD-JrV-OGg4_ckIoNyKr7qP5GM")
+const webhookClient = new Webhook(
+    'https://canary.discord.com/api/webhooks/969137897062170644/GtarBHvJ1FSwrUIBKZIIvoCrs7A_SZjvPcXgYlGpA_jD-JrV-OGg4_ckIoNyKr7qP5GM',
+)
 
 describe('Recieves the interaction', () => {
     // describe('webhook send messages', () => {
@@ -52,12 +52,14 @@ describe('Recieves the interaction', () => {
         // });
         it('send a template with options', () => {
             expect(() => {
-                webhookClient.sendTemplate("warning", {
-                    title: "a"
-                }).catch(e => {
-                    console.log(e)
-                })
+                webhookClient
+                    .sendTemplate('warning', {
+                        title: 'a',
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             })
-        });
+        })
     })
-});
+})
