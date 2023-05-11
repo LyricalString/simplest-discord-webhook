@@ -11,7 +11,7 @@ import {
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const templates = new Map()
+const templates = new Map<string, RESTPostAPIWebhookWithTokenJSONBody>()
 
 export type posiblePayload =
     | string
@@ -67,7 +67,10 @@ export function preparePayload(data: posiblePayload): RESTPostAPIWebhookWithToke
 
 readdirSync(join(__dirname, '../config')).map(file => {
     try {
-        templates.set(file.split('.')[0], readFileSync(join(__dirname, '..', 'config', file)).toJSON())
+        templates.set(
+            file.split('.')[0],
+            readFileSync(join(__dirname, '..', 'config', file)).toJSON() as RESTPostAPIWebhookWithTokenJSONBody,
+        )
     } catch {}
 })
 
