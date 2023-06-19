@@ -1,31 +1,29 @@
 {
-  "type": "commonjs",
-  "name": "simplest-discord-webhook",
-  "version": "1.2.0",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "publish": "npm publish",
-    "build": "esbuild ./src/index.js --format=cjs --bundle --outfile=./dist/index.js --platform=node --target=node17.4 --minify",
-    "test": "jest",
-    "test:watch": "jest --watch"
-  },
-  "keywords": [
-    "discord",
-    "discord webhook",
-    "discord webhooks",
-    "discordjs webhook",
-    "simple discord webhooks"
-  ],
-  "author": "LyricalString",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.27.2",
-    "discord.js": "^13.6.0"
-  },
-  "devDependencies": {
-    "esbuild": "^0.14.38",
-    "jest": "^28.0.2",
-    "jest-cli": "^28.0.2"
-  }
+    "type": "module",
+    "name": "simplest-discord-webhook",
+    "version": "2.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "publish": "npm publish",
+        "build": "tsc && esbuild dist/index.js --minify --allow-overwrite --outfile=dist/index.js && esbuild dist/templates.js --minify --allow-overwrite --outfile=dist/templates.js"
+    },
+    "keywords": [
+        "discord",
+        "discord webhook",
+        "discord webhooks",
+        "discordjs webhook",
+        "simple discord webhooks"
+    ],
+    "author": "LyricalString",
+    "license": "ISC",
+    "devDependencies": {
+        "discord.js": "^14",
+        "esbuild": "0.17.18",
+        "typescript": "5.0.4"
+    },
+    "dependencies": {
+        "just-extend": "6.2.0"
+    }
 }

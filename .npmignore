@@ -1,5 +1,5 @@
 .github
 src
 test
-testing.js
-dist
+node_modules
+tsconfig.json
